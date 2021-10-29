@@ -3,6 +3,7 @@ const app=express()
 const cors=require('cors')
 const{MongoClient}=require('mongodb')
 require("dotenv").config();
+const{ObjectId}=require('mongodb')
 const port=process.env.PORT || 5000
 //  using middleware
 app.use(cors())
@@ -19,15 +20,33 @@ async function run() {
       console.log('database connected')
       const database = client.db('Travel-Adventure');
     const eventsCollection = database.collection('adventures');
+    const bookingCollection=database.collection('bookings')
     // add item
     app.post('/addItem', async(req,res)=>{
         const events=req.body
         console.log(events)
         const insertedResult=await eventsCollection.insertOne(events)
     })
+    // add booking order
+    app.post('/addBooking', async(req,res)=>{
+        const booking=req.body
+        console.log(booking)
+        const insertedResult=await bookingCollection.insertOne(booking)
+    })
     // load allevents
     app.get('/allevents', async(req,res)=>{
         const getEvents=await eventsCollection.find({}).toArray();
+        res.json(getEvents)
+    })
+    // load all bookings
+    app.get('/allBookings', async(req,res)=>{
+        const getBookings=await bookingCollection.find({}).toArray();
+        res.json(getBookings)
+    })
+    // load single item
+    app.get('/singleItem/:id', async(req,res)=>{
+        const itemQuery=req.params.id
+        const getEvents=await eventsCollection.find({_id:ObjectId(itemQuery)}).toArray();
         res.json(getEvents)
     })
      
