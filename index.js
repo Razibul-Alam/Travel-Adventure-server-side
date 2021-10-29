@@ -43,6 +43,13 @@ async function run() {
         const getBookings=await bookingCollection.find({}).toArray();
         res.json(getBookings)
     })
+    // load all bookings by email
+    app.get('/getBookingsByEmail', async(req,res)=>{
+        const queryEmail=req.query.email;
+        console.log(queryEmail)
+        const getBookings=await bookingCollection.find({email:queryEmail}).toArray();
+        res.json(getBookings)
+    })
     // load single item
     app.get('/singleItem/:id', async(req,res)=>{
         const itemQuery=req.params.id
