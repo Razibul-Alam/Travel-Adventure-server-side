@@ -57,6 +57,33 @@ async function run() {
         res.json(getEvents)
     })
      
+    //  delete an item by id
+    app.delete('/removeItem/:id',async(req,res)=>{
+        const removeId=req.params.id
+        console.log(removeId)
+        const deletedItem= await bookingCollection.deleteOne({_id:ObjectId(removeId)})
+        console.log(deletedItem)
+        res.send(deletedItem)
+    })
+    
+     // update status
+     app.put('/updateStatus',async(req,res)=>{
+        const updateInfo=req.body
+        const filter = { _id:ObjectId(req.body.id)};
+        console.log(updateInfo,'hit the server')
+        const updateStatus = {
+
+            $set: {
+      
+              status:req.body.status,
+      
+            },
+      
+          };
+          const updateResult=await bookingCollection.updateOne(filter,updateStatus) 
+          console.log(updateResult)
+    })
+
     } finally {
     //   await client.close();
     }
