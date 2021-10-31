@@ -32,6 +32,7 @@ async function run() {
         const booking=req.body
         console.log(booking)
         const insertedResult=await bookingCollection.insertOne(booking)
+        res.json(insertedResult)
     })
     // load allevents
     app.get('/allevents', async(req,res)=>{
