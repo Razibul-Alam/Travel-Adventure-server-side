@@ -26,6 +26,7 @@ async function run() {
         const events=req.body
         console.log(events)
         const insertedResult=await eventsCollection.insertOne(events)
+        res.json(insertedResult)
     })
     // add booking order
     app.post('/addBooking', async(req,res)=>{
@@ -64,7 +65,7 @@ async function run() {
         console.log(removeId)
         const deletedItem= await bookingCollection.deleteOne({_id:ObjectId(removeId)})
         console.log(deletedItem)
-        res.send(deletedItem)
+        res.json(deletedItem)
     })
     
      // update status
@@ -82,7 +83,7 @@ async function run() {
       
           };
           const updateResult=await bookingCollection.updateOne(filter,updateStatus) 
-          console.log(updateResult)
+          res.json(updateResult)
     })
 
     } finally {
